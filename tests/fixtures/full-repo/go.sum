@@ -1,0 +1,3 @@
+github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixb1rtoI7EF+HGZKe4gs4o=
+github.com/stretchr/testify v1.9.0 h1:HtqpZuhOl1uCcSD8gTf6f0eLcJzL8ULHPjDpbLxdC3M=
+golang.org/x/text v0.14.0 h1:ScX5w1eTa3QqT8oi6+ziP7dTV1S2+ALU0bI+0zXVGYg=

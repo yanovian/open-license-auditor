@@ -1,0 +1,8 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation 'com.google.guava:guava:31.1-jre'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.1"
+}

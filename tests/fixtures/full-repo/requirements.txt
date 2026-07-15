@@ -1,0 +1,4 @@
+# comment line, should be ignored
+requests==2.31.0
+flask==3.0.3
+unpinned-package

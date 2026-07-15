@@ -1,0 +1,11 @@
+[package]
+name = "fixture-app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = "1.0"
+local-lib = { path = "../local-lib" }
+
+[dev-dependencies]
+proptest = "1.4"

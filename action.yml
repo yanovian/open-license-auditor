@@ -1,0 +1,52 @@
+name: 'Open License Auditor'
+description: 'Maps every dependency in a repo, direct and transitive, and flags risky open source licenses'
+author: 'yanovian'
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  config-path:
+    description: 'Path to the audit config file in this repo'
+    required: false
+    default: '.github/license-audit.yml'
+  severity-filter:
+    description: 'Which findings to show in the PR comment: critical, warning, both, or none'
+    required: false
+    default: 'both'
+  fail-on:
+    description: 'Which findings make the Action exit non-zero: critical, warning, or none'
+    required: false
+    default: 'critical'
+  comment-on-pr:
+    description: 'Whether to post a PR comment with the results'
+    required: false
+    default: 'true'
+  comment-only-on-problems:
+    description: 'If true, skip posting a comment at all when no problems are found'
+    required: false
+    default: 'false'
+  update-existing-comment:
+    description: "If true, edit the bot's previous comment instead of posting a new one each run"
+    required: false
+    default: 'true'
+  github-token:
+    description: 'Token used to read PR context and post comments'
+    required: false
+    default: ${{ github.token }}
+  cache:
+    description: 'Whether to cache license lookups across workflow runs'
+    required: false
+    default: 'true'
+
+outputs:
+  has-critical:
+    description: 'true if any dependency was classified as critical'
+  has-warning:
+    description: 'true if any dependency was classified as warning'
+  report-path:
+    description: 'Path to the full JSON dependency and license report written to disk'
+
+runs:
+  using: 'node24'
+  main: 'dist/index.js'

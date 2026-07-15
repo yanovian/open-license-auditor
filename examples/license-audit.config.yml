@@ -1,0 +1,24 @@
+# Config for open-license-auditor.
+# Copy this file into your repo at .github/license-audit.yml, or point the Action's
+# config-path input somewhere else.
+#
+# This entire file is optional. With no config file at all, every supported ecosystem is
+# scanned and the default license buckets apply.
+
+version: 1
+
+# Optional: turn off specific ecosystems. Anything not listed here is scanned automatically.
+# Supported names: npm, pip, cargo, go, maven, gradle, rubygems, composer, nuget.
+# ecosystems:
+#   gradle: false
+
+# Which bucket a license goes in. Add or remove SPDX ids freely, plain names, no wildcards
+# or regex to write. Whatever bucket you put an id in here always overrides its default.
+# See _docs/license-classification.md for the full default table and why each bucket exists.
+licenses:
+  ok:
+    - MIT
+  warning:
+    - LGPL-2.1
+  critical:
+    - GPL-3.0

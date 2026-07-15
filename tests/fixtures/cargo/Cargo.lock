@@ -1,0 +1,13 @@
+version = 3
+
+[[package]]
+name = "fixture-app"
+version = "0.1.0"
+
+[[package]]
+name = "serde"
+version = "1.0.203"
+
+[[package]]
+name = "proptest"
+version = "1.4.0"

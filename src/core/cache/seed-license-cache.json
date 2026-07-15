@@ -1,0 +1,67 @@
+{
+  "NPM": {
+    "react": "MIT",
+    "react-dom": "MIT",
+    "lodash": "MIT",
+    "express": "MIT",
+    "axios": "MIT",
+    "chalk": "MIT",
+    "commander": "MIT",
+    "typescript": "Apache-2.0",
+    "webpack": "MIT",
+    "vue": "MIT",
+    "left-pad": "WTFPL",
+    "moment": "MIT",
+    "eslint": "MIT",
+    "prettier": "MIT",
+    "jest": "MIT",
+    "vitest": "MIT",
+    "zod": "MIT",
+    "yargs": "MIT",
+    "uuid": "MIT",
+    "dotenv": "BSD-2-Clause"
+  },
+  "PYPI": {
+    "requests": "Apache-2.0",
+    "flask": "BSD-3-Clause",
+    "django": "BSD-3-Clause",
+    "numpy": "BSD-3-Clause",
+    "pandas": "BSD-3-Clause",
+    "pytest": "MIT",
+    "click": "BSD-3-Clause",
+    "pyyaml": "MIT",
+    "urllib3": "MIT",
+    "jinja2": "BSD-3-Clause",
+    "setuptools": "MIT"
+  },
+  "CARGO": {
+    "serde": "MIT",
+    "tokio": "MIT",
+    "clap": "MIT",
+    "rand": "MIT",
+    "log": "MIT",
+    "regex": "MIT"
+  },
+  "MAVEN": {
+    "com.google.guava:guava": "Apache-2.0",
+    "org.apache.commons:commons-lang3": "Apache-2.0",
+    "junit:junit": "EPL-1.0",
+    "com.fasterxml.jackson.core:jackson-databind": "Apache-2.0"
+  },
+  "GO": {
+    "github.com/pkg/errors": "BSD-2-Clause",
+    "github.com/stretchr/testify": "MIT",
+    "github.com/gin-gonic/gin": "MIT"
+  },
+  "RUBYGEMS": {
+    "rails": "MIT",
+    "rspec": "MIT",
+    "rack": "MIT",
+    "puma": "BSD-3-Clause"
+  },
+  "NUGET": {
+    "Newtonsoft.Json": "MIT",
+    "Serilog": "Apache-2.0",
+    "xunit": "Apache-2.0"
+  }
+}
