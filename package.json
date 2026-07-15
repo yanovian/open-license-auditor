@@ -1,6 +1,6 @@
 {
   "name": "open-license-auditor",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "GitHub Action that maps every dependency in a repo and flags risky open source licenses",
   "private": true,
   "license": "MIT",
