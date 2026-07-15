@@ -1,22 +1,19 @@
-<div align="center">
+# 🛡️ Open License Auditor
 
-# Open License Auditor
-
-[🛒 Marketplace](https://github.com/marketplace/actions/open-license-auditor) • [⚙️ Configuration](_docs/configuration.md) • [📋 License classification](_docs/license-classification.md) • [❓ FAQ](_docs/faq-and-limitations.md)
-
-[![Latest release](https://img.shields.io/github/v/release/yanovian/open-license-auditor)](https://github.com/yanovian/open-license-auditor/releases/latest)
-[![Marketplace](https://img.shields.io/badge/Marketplace-Open%20License%20Auditor-blue?logo=github)](https://github.com/marketplace/actions/open-license-auditor)
 [![CI](https://github.com/yanovian/open-license-auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/yanovian/open-license-auditor/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/yanovian/open-license-auditor)](https://github.com/yanovian/open-license-auditor/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/yanovian/open-license-auditor)](LICENSE)
 
-</div>
+**Maps every dependency in your repo and flags risky open source licenses.**
+
+> 🛒 [Check out on the Marketplace](https://github.com/marketplace/actions/open-license-auditor)
+>
+> [Configuration →](_docs/configuration.md) · [License classification →](_docs/license-classification.md) · [FAQ →](_docs/faq-and-limitations.md)
 
 A GitHub Action that maps every dependency in your repo, direct and indirect, and flags any
 open source license that could be a problem. It supports npm, Yarn, pnpm, pip, Poetry, uv,
 Cargo, Go modules, Maven, Gradle, RubyGems, Composer, and NuGet, and scans all of them
 automatically.
-
-Available on the [GitHub Marketplace](https://github.com/marketplace/actions/open-license-auditor).
 
 On every pull request, it posts one comment: a direct list of anything risky, plus a full
 dependency map you can expand if you want to see everything. If nothing is wrong, it just says
