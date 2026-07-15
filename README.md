@@ -19,16 +19,47 @@ On every pull request, it posts one comment: a direct list of anything risky, pl
 dependency map you can expand if you want to see everything. If nothing is wrong, it just says
 so.
 
-## Quick start
+## Usage
 
-1. Copy [`examples/workflows/license-audit.yml`](examples/workflows/license-audit.yml) into
-   `.github/workflows/license-audit.yml` in your repo.
-2. That's it. Open a pull request and the Action runs automatically.
+Save this as `.github/workflows/license-audit.yml` in your repo:
 
-Want to change which licenses count as ok, warning, or critical? Copy
-[`examples/license-audit.config.yml`](examples/license-audit.config.yml) into
-`.github/license-audit.yml` and edit it. See [`_docs/configuration.md`](_docs/configuration.md)
-for every option.
+```yaml
+name: License Audit
+
+on: pull_request
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: yanovian/open-license-auditor@v1
+        with:
+          config-path: .github/license-audit.yml
+          severity-filter: both
+          fail-on: critical
+          comment-on-pr: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+That's it. Open a pull request and the Action runs automatically.
+
+- Full copy of the workflow above: [`examples/workflows/license-audit.yml`](examples/workflows/license-audit.yml)
+- Every input and config field: [`_docs/configuration.md`](_docs/configuration.md)
+- Change which licenses count as ok, warning, or critical: copy
+  [`examples/license-audit.config.yml`](examples/license-audit.config.yml) into
+  `.github/license-audit.yml` and edit it.
+
+## Example
+
+What the PR comment looks like when it finds something:
+
+![Example PR comment listing dependencies with warning-level licenses](_docs/screenshots/example-comment.png)
 
 ## What critical, warning, and ok mean
 
