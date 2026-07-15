@@ -45,6 +45,19 @@ function makeReport(
 }
 
 describe('buildPrComment', () => {
+  it('ends with the Open License Auditor footer, linking to the marketplace and the docs', () => {
+    const report = makeReport([makeNode()]);
+    const comment = buildPrComment(report, 'both');
+    const lines = comment.trim().split('\n');
+
+    expect(lines[lines.length - 1]).toContain(
+      '[Open License Auditor](https://github.com/marketplace/actions/open-license-auditor)',
+    );
+    expect(lines[lines.length - 1]).toContain(
+      '[license classification guide](https://github.com/yanovian/open-license-auditor/blob/master/_docs/license-classification.md)',
+    );
+  });
+
   it('reports no problems and includes the disclaimer when everything is ok', () => {
     const report = makeReport([makeNode()]);
     const comment = buildPrComment(report, 'both');

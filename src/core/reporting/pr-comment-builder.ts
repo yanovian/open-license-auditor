@@ -17,6 +17,11 @@ const DISCLAIMER =
   'between versions of a package. Always confirm with the actual license file before making ' +
   'a legal decision.';
 
+const FOOTER =
+  'Scanned by [Open License Auditor](https://github.com/marketplace/actions/open-license-auditor). ' +
+  'See the [license classification guide](https://github.com/yanovian/open-license-auditor/blob/master/_docs/license-classification.md) ' +
+  'for what counts as risky and why.';
+
 // GitHub rejects PR comments over 65536 characters. A very large dependency tree can exceed
 // that in its full map alone, so the map is dropped in favor of a note if the comment would
 // otherwise be rejected; the problem table above it is never truncated.
@@ -133,14 +138,22 @@ function buildProblemBody(report: AuditReport, problemRows: readonly ProblemRow[
   const summary = `Found ${problemRows.length} problem${problemRows.length === 1 ? '' : 's'} that need a look.`;
   const table = buildProblemTable(problemRows);
   const coverageNote = buildCoverageNoteSection(report);
-  const sections = [header, summary, table, buildFullMapSection(report), coverageNote, DISCLAIMER];
+  const sections = [
+    header,
+    summary,
+    table,
+    buildFullMapSection(report),
+    coverageNote,
+    DISCLAIMER,
+    FOOTER,
+  ];
   const fullBody = sections.filter((section) => section !== null).join('\n\n');
 
   if (fullBody.length <= GITHUB_COMMENT_CHARACTER_LIMIT) {
     return fullBody;
   }
 
-  return [header, summary, table, TRUNCATION_NOTICE, coverageNote, DISCLAIMER]
+  return [header, summary, table, TRUNCATION_NOTICE, coverageNote, DISCLAIMER, FOOTER]
     .filter((section) => section !== null)
     .join('\n\n');
 }
@@ -152,7 +165,13 @@ export function buildPrComment(report: AuditReport, severityFilter: SeverityFilt
   let body: string;
   if (problemRows.length === 0) {
     const coverageNote = buildCoverageNoteSection(report);
-    const sections = ['## Open License Auditor', 'No problems found.', coverageNote, DISCLAIMER];
+    const sections = [
+      '## Open License Auditor',
+      'No problems found.',
+      coverageNote,
+      DISCLAIMER,
+      FOOTER,
+    ];
     body = sections.filter((section) => section !== null).join('\n\n');
   } else {
     body = buildProblemBody(report, problemRows);
