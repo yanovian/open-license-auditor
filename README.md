@@ -109,3 +109,7 @@ versions of a package. Use it as a starting point, not a final answer.
 
 This project uses [pnpm](https://pnpm.io) and Node 24. See [`Makefile`](Makefile) for the
 available dev commands (`make install`, `make test`, `make lint`, `make verify`, and so on).
+
+## Projects using it
+
+- [Tabby: Chrome extension](https://github.com/yanovian/chrome-ext-tabby)
