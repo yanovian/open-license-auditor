@@ -6,8 +6,6 @@
 
 **Maps every dependency in your repo and flags risky open source licenses.**
 
-> 🛒 [Check out on the Marketplace](https://github.com/marketplace/actions/open-license-auditor)
->
 > [Configuration →](_docs/configuration.md) · [License classification →](_docs/license-classification.md) · [FAQ →](_docs/faq-and-limitations.md)
 
 A GitHub Action that maps every dependency in your repo, direct and indirect, and flags any
