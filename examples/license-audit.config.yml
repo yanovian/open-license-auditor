@@ -22,3 +22,8 @@ licenses:
     - LGPL-2.1
   critical:
     - GPL-3.0
+
+# Optional: path prefixes, relative to the repo root, that this Action should skip entirely.
+# ignorePaths:
+#   - examples
+#   - test-fixtures

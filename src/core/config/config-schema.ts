@@ -23,6 +23,8 @@ export const configSchema = z.object({
   // Anything not listed here is scanned automatically; this is only for disabling one.
   ecosystems: z.partialRecord(ecosystemIdSchema, z.boolean()).default({}),
   licenses: licenseListsSchema,
+  // Path prefixes, relative to the repo root, that this Action should skip entirely.
+  ignorePaths: z.array(z.string()).default([]),
 });
 
 export type ResolvedConfig = z.infer<typeof configSchema>;

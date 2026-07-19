@@ -10,6 +10,7 @@ describe('loadConfig', () => {
     expect(config.version).toBe(1);
     expect(config.ecosystems).toEqual({});
     expect(config.licenses).toEqual({});
+    expect(config.ignorePaths).toEqual([]);
   });
 
   it('parses and validates a config file', async () => {
@@ -18,5 +19,6 @@ describe('loadConfig', () => {
     expect(config.ecosystems).toEqual({ gradle: false });
     expect(config.licenses.ok).toEqual(['MPL-2.0']);
     expect(config.licenses.critical).toEqual(['MIT']);
+    expect(config.ignorePaths).toEqual(['examples', 'test-fixtures']);
   });
 });

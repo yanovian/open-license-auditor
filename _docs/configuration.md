@@ -53,6 +53,10 @@ licenses:
     - LGPL-2.1
   critical:
     - GPL-3.0
+
+# ignorePaths:
+#   - examples
+#   - test-fixtures
 ```
 
 ### `ecosystems`
@@ -68,3 +72,17 @@ you want it treated. An id you list here always overrides its default bucket, in
 direction. You never need to worry about how a registry phrases a license string. See
 [license-classification.md](license-classification.md) for the full default table and how
 license strings get matched.
+
+### `ignorePaths`
+
+A list of path prefixes, relative to the repo root, that this Action should skip entirely. Any
+file whose path equals or starts with one of these prefixes is excluded before manifest
+discovery, so it never contributes a manifest to scan or an unsupported-ecosystem note. Useful
+for excluding examples, fixtures, or vendored sample projects that happen to contain their own
+package manifests.
+
+```yaml
+ignorePaths:
+  - examples
+  - test-fixtures
+```

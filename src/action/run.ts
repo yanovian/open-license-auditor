@@ -115,7 +115,7 @@ export async function run(logger: Logger): Promise<void> {
   const { cache, persist } = await initializeCache(inputs.cacheEnabled);
 
   logger.info('Scanning repository for package manager files');
-  const repoFiles = await listRepoFiles(repoRoot);
+  const repoFiles = await listRepoFiles(repoRoot, config.ignorePaths);
   const allManifests = discoverManifests(repoFiles, registry);
   const { enabled, skippedByConfig } = partitionManifestsByConfig(allManifests, config);
   const unsupported = detectUnsupportedEcosystems(repoFiles);
