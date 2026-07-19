@@ -41,6 +41,13 @@ example `A AND B OR C`) is treated as unrecognized, since there is no safe way t
 grouping. You can still list the exact expression string under `licenses.ok`, `.warning`, or
 `.critical` in your config to override it directly.
 
+## Weak copyleft license links
+
+When a PR comment flags a weak copyleft license (LGPL, MPL, EPL, or CDDL, on its own or as part
+of an `AND`/`OR` expression), the comment ends with a link to that license's official text. These
+links are for convenience only. They can go stale or point to the wrong version of a license, so
+verify the actual license text yourself before making a legal decision.
+
 ## Default table
 
 | License | Bucket | Why |

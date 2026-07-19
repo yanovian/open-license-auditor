@@ -1,3 +1,4 @@
+import { WEAK_COPYLEFT_LICENSE_LINKS } from '../classification/weak-copyleft-links.js';
 import type { Classification, DependencyNode } from '../types/dependency-node.js';
 import type { AuditReport, ManifestReport } from '../types/report.js';
 import type { SeverityFilter } from '../types/severity.js';
@@ -133,17 +134,60 @@ function buildCoverageNoteSection(report: AuditReport): string | null {
   return ['### Not checked', ...skippedLines, ...unsupportedLines].join('\n');
 }
 
+// A license string is either a single canonical id or a ` AND `/` OR ` expression of them; this
+// splits either shape to find any weak copyleft id mentioned, without needing to know which one
+// actually drove the classification.
+const EXPRESSION_TERM_SEPARATOR = /\s+(?:AND|OR)\s+/;
+
+function referencedWeakCopyleftIds(licenseString: string): string[] {
+  return licenseString
+    .split(EXPRESSION_TERM_SEPARATOR)
+    .filter((term) => term in WEAK_COPYLEFT_LICENSE_LINKS);
+}
+
+/**
+ * Points to the official text of every weak copyleft license found among the problem rows, so
+ * the reader does not have to go looking for it. Returns null when no problem row involves one,
+ * so this section only ever appears when it has something to link to.
+ */
+function buildWeakCopyleftLinksSection(problemRows: readonly ProblemRow[]): string | null {
+  const ids = new Set<string>();
+  for (const row of problemRows) {
+    for (const id of referencedWeakCopyleftIds(row.license)) {
+      ids.add(id);
+    }
+  }
+  if (ids.size === 0) {
+    return null;
+  }
+
+  const lines = [...ids]
+    .sort()
+    .map((id) => `- **${id}**: ${WEAK_COPYLEFT_LICENSE_LINKS[id]}`)
+    .join('\n');
+
+  return [
+    '### Weak copyleft license text',
+    lines,
+    'These links are provided for convenience. They can go stale or point to the wrong ' +
+      'version of a license, so verify the actual license text yourself before making a ' +
+      'legal decision.',
+  ].join('\n\n');
+}
+
 function buildProblemBody(report: AuditReport, problemRows: readonly ProblemRow[]): string {
   const header = '## Open License Auditor';
   const summary = `Found ${problemRows.length} problem${problemRows.length === 1 ? '' : 's'} that need a look.`;
   const table = buildProblemTable(problemRows);
   const coverageNote = buildCoverageNoteSection(report);
+  const weakCopyleftLinks = buildWeakCopyleftLinksSection(problemRows);
   const sections = [
     header,
     summary,
     table,
     buildFullMapSection(report),
     coverageNote,
+    weakCopyleftLinks,
     DISCLAIMER,
     FOOTER,
   ];
@@ -153,7 +197,16 @@ function buildProblemBody(report: AuditReport, problemRows: readonly ProblemRow[
     return fullBody;
   }
 
-  return [header, summary, table, TRUNCATION_NOTICE, coverageNote, DISCLAIMER, FOOTER]
+  return [
+    header,
+    summary,
+    table,
+    TRUNCATION_NOTICE,
+    coverageNote,
+    weakCopyleftLinks,
+    DISCLAIMER,
+    FOOTER,
+  ]
     .filter((section) => section !== null)
     .join('\n\n');
 }

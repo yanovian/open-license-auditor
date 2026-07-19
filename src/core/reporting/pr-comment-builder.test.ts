@@ -183,6 +183,62 @@ describe('buildPrComment', () => {
     expect(comment).not.toContain('Not checked');
   });
 
+  it('links to the official text of a weak copyleft license found among the problems', () => {
+    const mplLib = makeNode({
+      key: 'npm:mpl-lib@1.0.0',
+      name: 'mpl-lib',
+      license: { raw: 'MPL-2.0', canonicalId: 'MPL-2.0', source: 'depsdev' },
+      classification: 'warning',
+    });
+    const report = makeReport([mplLib]);
+
+    const comment = buildPrComment(report, 'both');
+
+    expect(comment).toContain('### Weak copyleft license text');
+    expect(comment).toContain('**MPL-2.0**: https://www.mozilla.org/en-US/MPL/2.0/');
+    expect(comment).toContain('verify the actual license text yourself');
+  });
+
+  it('links every weak copyleft id mentioned in a compound expression, deduplicated', () => {
+    const bundledLib = makeNode({
+      key: 'npm:bundled-lib@1.0.0',
+      name: 'bundled-lib',
+      license: {
+        raw: 'Apache-2.0 AND LGPL-3.0 AND MIT',
+        canonicalId: 'Apache-2.0 AND LGPL-3.0 AND MIT',
+        source: 'depsdev',
+      },
+      classification: 'warning',
+    });
+    const otherLgplLib = makeNode({
+      key: 'npm:other-lgpl-lib@1.0.0',
+      name: 'other-lgpl-lib',
+      license: { raw: 'LGPL-3.0', canonicalId: 'LGPL-3.0', source: 'depsdev' },
+      classification: 'warning',
+    });
+    const report = makeReport([bundledLib, otherLgplLib]);
+
+    const comment = buildPrComment(report, 'both');
+    const linkOccurrences = comment.split('**LGPL-3.0**:').length - 1;
+
+    expect(comment).toContain('**LGPL-3.0**: https://www.gnu.org/licenses/lgpl-3.0.html');
+    expect(linkOccurrences).toBe(1);
+  });
+
+  it('omits the weak copyleft links section when no problem involves one', () => {
+    const gplLib = makeNode({
+      key: 'npm:gpl-lib@2.0.0',
+      name: 'gpl-lib',
+      license: { raw: 'GPL-3.0', canonicalId: 'GPL-3.0', source: 'depsdev' },
+      classification: 'critical',
+    });
+    const report = makeReport([gplLib]);
+
+    const comment = buildPrComment(report, 'both');
+
+    expect(comment).not.toContain('Weak copyleft license text');
+  });
+
   it('never contains an em dash', () => {
     const report = makeReport([
       makeNode({
