@@ -26,6 +26,21 @@ put a license in always wins over the defaults below. See
 You do not need to worry about the exact wording a registry reports. `MIT`, `MIT License`, and
 `The MIT License (MIT)` all resolve to the same entry automatically.
 
+## Compound expressions
+
+Some registries report a license as an `AND`/`OR` expression, such as `MIT AND Zlib` or
+`GPL-3.0-or-later OR MIT`. Each side is classified on its own, then combined:
+
+- `OR` takes the best (most permissive) side, since you can always choose to comply with
+  whichever license is least restrictive. `GPL-3.0 OR MIT` is `ok`.
+- `AND` takes the worst (most restrictive) side, since every part's terms apply at once.
+  `Apache-2.0 AND LGPL-3.0` is `warning`.
+
+An expression mixing both operators with no parentheses to say which one binds first (for
+example `A AND B OR C`) is treated as unrecognized, since there is no safe way to guess the
+grouping. You can still list the exact expression string under `licenses.ok`, `.warning`, or
+`.critical` in your config to override it directly.
+
 ## Default table
 
 | License | Bucket | Why |
@@ -41,6 +56,8 @@ You do not need to worry about the exact wording a registry reports. `MIT`, `MIT
 | CC0-1.0 | ok | Public domain dedication. |
 | Zlib | ok | Attribution only, no copyleft. |
 | WTFPL | ok | Public domain equivalent. |
+| BlueOak-1.0.0 | ok | Attribution only, with an explicit patent grant; as permissive as MIT. |
+| Python-2.0 | ok | PSF license, attribution only, no copyleft. |
 | LGPL-2.1 | warning | Copyleft only for changes to the library itself; safe use depends on how you link it. |
 | LGPL-3.0 | warning | Same as LGPL-2.1, with added patent terms. |
 | MPL-2.0 | warning | File level copyleft; safe use depends on your distribution model. |

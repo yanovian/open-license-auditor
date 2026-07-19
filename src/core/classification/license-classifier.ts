@@ -36,6 +36,40 @@ function buildClassificationMap(overrides: LicenseLists | undefined): Map<string
   return classificationMap;
 }
 
+// AND takes the worst part, since every part's terms must be satisfied at once; OR takes the
+// best part, since you can always choose to comply with whichever part is least restrictive.
+const WORST_FIRST: readonly Classification[] = ['critical', 'warning', 'ok'];
+const BEST_FIRST: readonly Classification[] = ['ok', 'warning', 'critical'];
+
+function classifyId(
+  canonicalId: string,
+  classificationMap: Map<string, Classification>,
+): Classification {
+  // A user override or the default table may list this exact compound expression, which wins
+  // over splitting it apart.
+  const direct = classificationMap.get(canonicalId);
+  if (direct !== undefined) {
+    return direct;
+  }
+  if (canonicalId.includes(' OR ')) {
+    return combine(canonicalId.split(' OR '), classificationMap, BEST_FIRST);
+  }
+  if (canonicalId.includes(' AND ')) {
+    return combine(canonicalId.split(' AND '), classificationMap, WORST_FIRST);
+  }
+  return 'warning';
+}
+
+/** Picks whichever part's classification comes first in `preferenceOrder`. */
+function combine(
+  parts: readonly string[],
+  classificationMap: Map<string, Classification>,
+  preferenceOrder: readonly Classification[],
+): Classification {
+  const partClassifications = parts.map((part) => classifyId(part, classificationMap));
+  return preferenceOrder.find((candidate) => partClassifications.includes(candidate)) ?? 'warning';
+}
+
 /**
  * Unknown or unrecognized licenses always fall back to 'warning', never 'ok', so a gap in
  * license data can never silently pass as safe.
@@ -48,7 +82,7 @@ export function createLicenseClassifier(overrides?: LicenseLists): LicenseClassi
       if (canonicalLicenseId === null) {
         return 'warning';
       }
-      return classificationMap.get(canonicalLicenseId) ?? 'warning';
+      return classifyId(canonicalLicenseId, classificationMap);
     },
   };
 }

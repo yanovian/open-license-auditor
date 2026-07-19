@@ -32,4 +32,31 @@ describe('normalizeLicenseString', () => {
     expect(normalizeLicenseString('Unlicense')).toBe('Unlicense');
     expect(normalizeLicenseString('UNLICENSED')).toBe('UNLICENSED');
   });
+
+  it('recognizes BlueOak-1.0.0 and Python-2.0', () => {
+    expect(normalizeLicenseString('BlueOak-1.0.0')).toBe('BlueOak-1.0.0');
+    expect(normalizeLicenseString('Python-2.0')).toBe('Python-2.0');
+  });
+
+  it('normalizes every term of an OR expression', () => {
+    expect(normalizeLicenseString('GPL-3.0-or-later OR MIT')).toBe('GPL-3.0 OR MIT');
+    expect(normalizeLicenseString('Apache-2.0 OR BSD-2-Clause OR MIT')).toBe(
+      'Apache-2.0 OR BSD-2-Clause OR MIT',
+    );
+  });
+
+  it('normalizes every term of an AND expression', () => {
+    expect(normalizeLicenseString('BSD-3-Clause AND MIT')).toBe('BSD-3-Clause AND MIT');
+    expect(normalizeLicenseString('Apache-2.0 AND LGPL-3.0-or-later AND MIT')).toBe(
+      'Apache-2.0 AND LGPL-3.0 AND MIT',
+    );
+  });
+
+  it('returns null when any term of an expression is unrecognized', () => {
+    expect(normalizeLicenseString('MIT OR Some Custom License')).toBeNull();
+  });
+
+  it('returns null for an expression mixing AND and OR with no parentheses to disambiguate', () => {
+    expect(normalizeLicenseString('Apache-2.0 AND LGPL-3.0 OR MIT')).toBeNull();
+  });
 });

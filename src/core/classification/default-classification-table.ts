@@ -18,6 +18,8 @@ export const DEFAULT_CLASSIFICATION_TABLE: Readonly<Record<Classification, reado
     'CC0-1.0',
     'Zlib',
     'WTFPL',
+    'BlueOak-1.0.0',
+    'Python-2.0',
   ],
   warning: [
     'LGPL-2.1',

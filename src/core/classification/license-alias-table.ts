@@ -127,4 +127,9 @@ export const LICENSE_ALIAS_GROUPS: readonly LicenseAliasGroup[] = [
     ],
   },
   { canonicalId: 'SSPL-1.0', variants: ['SSPL-1.0', 'Server Side Public License'] },
+  { canonicalId: 'BlueOak-1.0.0', variants: ['BlueOak-1.0.0', 'Blue Oak Model License 1.0.0'] },
+  {
+    canonicalId: 'Python-2.0',
+    variants: ['Python-2.0', 'Python-2.0.1', 'Python Software Foundation License 2.0', 'PSF-2.0'],
+  },
 ];

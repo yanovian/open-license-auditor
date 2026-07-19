@@ -33,4 +33,29 @@ describe('createLicenseClassifier', () => {
     expect(classifier.classify('MPL-2.0')).toBe('ok');
     expect(classifier.classify('MIT')).toBe('critical');
   });
+
+  it('classifies BlueOak-1.0.0 and Python-2.0 as ok', () => {
+    const classifier = createLicenseClassifier();
+    expect(classifier.classify('BlueOak-1.0.0')).toBe('ok');
+    expect(classifier.classify('Python-2.0')).toBe('ok');
+  });
+
+  it('resolves an OR expression to its best (most permissive) part', () => {
+    const classifier = createLicenseClassifier();
+    expect(classifier.classify('GPL-3.0 OR MIT')).toBe('ok');
+    expect(classifier.classify('Apache-2.0 OR BSD-2-Clause OR MIT')).toBe('ok');
+    expect(classifier.classify('GPL-3.0 OR MPL-2.0')).toBe('warning');
+  });
+
+  it('resolves an AND expression to its worst (most restrictive) part', () => {
+    const classifier = createLicenseClassifier();
+    expect(classifier.classify('BSD-3-Clause AND MIT')).toBe('ok');
+    expect(classifier.classify('Apache-2.0 AND LGPL-3.0 AND MIT')).toBe('warning');
+    expect(classifier.classify('Apache-2.0 AND GPL-3.0')).toBe('critical');
+  });
+
+  it('lets a user override win over splitting a compound expression apart', () => {
+    const classifier = createLicenseClassifier({ critical: ['GPL-3.0 OR MIT'] });
+    expect(classifier.classify('GPL-3.0 OR MIT')).toBe('critical');
+  });
 });
