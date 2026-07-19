@@ -28,16 +28,21 @@ export async function lookupLicenseViaDepsDev(
     };
   }
 
-  const cacheKey = `depsdev-license:${system}:${node.name}@${node.version}`;
+  // Only the raw license string is cached, never the canonicalId derived from it: the raw
+  // string is an immutable fact about a published package version, safe to cache forever, but
+  // canonicalId depends on this tool's own classification logic, which can improve over time.
+  // Caching canonicalId would freeze old normalization results in the persistent cache and hide
+  // every future classification fix behind a cache hit.
+  const cacheKey = `depsdev-license-raw:${system}:${node.name}@${node.version}`;
 
-  return withCache(cache, cacheKey, async () => {
+  const rawLicense = await withCache(cache, cacheKey, async () => {
     const response = await client.getVersion(system, node.name, node.version);
-    const rawLicense = response.licenses?.[0] ?? null;
-
-    return {
-      raw: rawLicense,
-      canonicalId: normalizeLicenseString(rawLicense),
-      source: rawLicense ? 'depsdev' : 'unknown',
-    } satisfies LicenseInfo;
+    return response.licenses?.[0] ?? null;
   });
+
+  return {
+    raw: rawLicense,
+    canonicalId: normalizeLicenseString(rawLicense),
+    source: rawLicense ? 'depsdev' : 'unknown',
+  } satisfies LicenseInfo;
 }
